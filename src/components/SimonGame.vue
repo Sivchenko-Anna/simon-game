@@ -1,10 +1,9 @@
 <template>
   <div class="wrapper">
     <h1 class="wrapper__title">Simon</h1>
-    <div class="scores block">
+    <div class="scores">
       <h3 class="scores__current-score">Your Score: {{ score }}</h3>
       <p class="scores__message"></p>
-      <h3 class="scores__best-score">Best Score: 0</h3>
       <div class="level block">
         <p class="level__label">Уровень сложности</p>
         <label
@@ -24,13 +23,15 @@
         </label>
       </div>
     </div>
-    <div class="game-pad block">
-      <button class="pad pad-green" @click="handleClick(1)"></button>
-      <button class="pad pad-red" @click="handleClick(2)"></button>
-      <button class="pad pad-yellow" @click="handleClick(3)"></button>
-      <button class="pad pad-blue" @click="handleClick(4)"></button>
+    <div class="game">
+      <div class="game-pad">
+        <button class="pad pad-green" @click="handleClick(1)"></button>
+        <button class="pad pad-red" @click="handleClick(2)"></button>
+        <button class="pad pad-yellow" @click="handleClick(3)"></button>
+        <button class="pad pad-blue" @click="handleClick(4)"></button>
+      </div>
+      <button class="game-start" @click="startGame">START</button>
     </div>
-    <button class="btn-start" @click="startGame">START</button>
   </div>
 </template>
 
@@ -131,8 +132,8 @@ export default {
     },
 
     updateTime(selectedLevel) {
-      this.time = this.levelTime[selectedLevel]
-      console.log(this.time)
+      this.time = this.levelTime[selectedLevel];
+      console.log(this.time);
     },
 
     gameOver() {
