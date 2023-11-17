@@ -2,7 +2,7 @@
   <div class="wrapper">
     <h1 class="wrapper__title">Simon</h1>
     <div class="scores">
-      <h3 class="scores__current-score">Your Score: {{ score }}</h3>
+      <h3 class="scores__current-score">Раунд : {{ score }}</h3>
       <p class="scores__message"></p>
       <div class="level block">
         <p class="level__label">Уровень сложности</p>
@@ -25,10 +25,10 @@
     </div>
     <div class="game">
       <div class="game-pad">
-        <button class="pad pad-green" @click="handleClick(1)"></button>
-        <button class="pad pad-red" @click="handleClick(2)"></button>
-        <button class="pad pad-yellow" @click="handleClick(3)"></button>
-        <button class="pad pad-blue" @click="handleClick(4)"></button>
+        <button class="pad pad-green" ref="1" @click="handleClick(1)"></button>
+        <button class="pad pad-red" ref="2" @click="handleClick(2)"></button>
+        <button class="pad pad-yellow" ref="3" @click="handleClick(3)"></button>
+        <button class="pad pad-blue" ref="4" @click="handleClick(4)"></button>
       </div>
       <button class="game-start" @click="startGame">START</button>
     </div>
@@ -70,6 +70,12 @@ export default {
   methods: {
     handleClick(id) {
       this.audio[id].play();
+      this.$refs[id].style.opacity = "0.5";
+      this.$refs[id].style.transform = "scale(0.9)";
+      setTimeout(() => {
+        this.$refs[id].style.opacity = "1";
+        this.$refs[id].style.transform = "scale(1)";
+      }, 500);
       if (this.isGameInProgress) {
         clearTimeout(this.timeoutId);
         this.userList.push(id);
@@ -78,9 +84,9 @@ export default {
     },
 
     startGame() {
+      this.time = this.levelTime[this.selectedLevel];
       this.orderList = [];
       this.userList = [];
-      this.time = this.levelTime[this.selectedLevel];
       this.startNextRound();
     },
 
@@ -92,15 +98,16 @@ export default {
     playOrderList() {
       this.isGameInProgress = false;
       this.orderList.push(this.getRandomButtonId());
+
       this.orderList.forEach((id, i) => {
         setTimeout(() => {
           this.handleClick(id);
-        }, 700 * i);
+        }, 1000 * i);
       });
       setTimeout(() => {
         this.isGameInProgress = true;
         this.startTimer();
-      }, this.orderList.length * 700);
+      }, this.orderList.length * 1000);
     },
 
     getRandomButtonId() {
@@ -123,17 +130,13 @@ export default {
     },
 
     startTimer() {
-      const startTime = new Date().getTime();
       this.timeoutId = setTimeout(() => {
-        const endTime = new Date().getTime();
-        console.log(endTime - startTime);
         this.gameOver();
       }, this.time);
     },
 
     updateTime(selectedLevel) {
       this.time = this.levelTime[selectedLevel];
-      console.log(this.time);
     },
 
     gameOver() {
