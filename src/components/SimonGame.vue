@@ -3,7 +3,7 @@
     <h1 class="wrapper__title">Simon</h1>
     <div class="scores">
       <h3 class="scores__current-score">Раунд : {{ score }}</h3>
-      <p class="scores__message"></p>
+      <p class="scores__message">{{ message }}</p>
       <div class="level block">
         <p class="level__label">Уровень сложности</p>
         <label
@@ -65,6 +65,7 @@ export default {
       },
       orderList: [],
       userList: [],
+      message: "Нажмите на кнопку start!"
     };
   },
   methods: {
@@ -98,6 +99,7 @@ export default {
     playOrderList() {
       this.isGameInProgress = false;
       this.orderList.push(this.getRandomButtonId());
+      this.message = "Слушайте!";
 
       this.orderList.forEach((id, i) => {
         setTimeout(() => {
@@ -106,6 +108,7 @@ export default {
       });
       setTimeout(() => {
         this.isGameInProgress = true;
+        this.message = "Повторите!";
         this.startTimer();
       }, this.orderList.length * 1000);
     },
@@ -146,6 +149,7 @@ export default {
       this.userList = [];
       this.orderList = [];
       this.audio[5].play();
+      this.message = "Вы проиграли!";
     },
   },
 };
