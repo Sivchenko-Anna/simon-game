@@ -104,13 +104,12 @@ export default {
       this.orderList.forEach((id, i) => {
         setTimeout(() => {
           this.handleClick(id);
-        }, 1000 * i);
+        }, this.levelTime[this.selectedLevel] * i);
       });
       setTimeout(() => {
         this.isGameInProgress = true;
         this.message = "Повторите!";
-        this.startTimer();
-      }, this.orderList.length * 1000);
+      }, this.orderList.length * this.levelTime[this.selectedLevel]);
     },
 
     getRandomButtonId() {
@@ -127,19 +126,12 @@ export default {
         setTimeout(() => {
           this.startNextRound();
         }, 1000);
-      } else {
-        this.startTimer();
       }
-    },
-
-    startTimer() {
-      this.timeoutId = setTimeout(() => {
-        this.gameOver();
-      }, this.time);
     },
 
     updateTime(selectedLevel) {
       this.time = this.levelTime[selectedLevel];
+      this.message = "Нажмите на кнопку start!";
     },
 
     gameOver() {
